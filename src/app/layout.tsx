@@ -1,9 +1,10 @@
 import { Outlet } from 'react-router'
-import { Container, Flex, Stack } from '@chakra-ui/react'
+import { Container, Flex, Grid, GridItem, Stack } from '@chakra-ui/react'
 import Logo from '../components/logo'
 import DisplayOptions from './_components/display_options'
 import SearchField from './_components/search_field'
 import CreateButton from './_components/create_button'
+import Card from '../components/card'
 
 export default function Layout() {
   return (
@@ -17,6 +18,13 @@ export default function Layout() {
             <CreateButton />
           </Stack>
         </Flex>
+        <Grid templateColumns="repeat(4, 1fr)" gap={4} mt={12}>
+          {Array.from({ length: 8 }).map((_, index) => (
+            <GridItem colSpan={1} key={index}>
+              <Card />
+            </GridItem>
+          ))}
+        </Grid>
       </Container>
       <Outlet />
     </>
