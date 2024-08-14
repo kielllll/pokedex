@@ -10,10 +10,6 @@ export const routes = createBrowserRouter([
     element: <AppLayout />,
     children: [
       {
-        index: true,
-        element: <div>Home</div>,
-      },
-      {
         path: 'create',
         element: <div>Create</div>,
       },
@@ -21,19 +17,15 @@ export const routes = createBrowserRouter([
         path: 'update',
         element: <div>Update</div>,
       },
+    ],
+  },
+  {
+    path: 'pokemons/:name',
+    element: <PokemonInfoLayout />,
+    children: [
       {
-        path: 'pokemons/:name',
-        element: <PokemonInfoLayout />,
-        children: [
-          {
-            index: true,
-            element: <div>Pokemon Info</div>,
-          },
-          {
-            path: 'update',
-            element: <div>Update</div>,
-          },
-        ],
+        path: 'update',
+        element: <div>Update</div>,
       },
     ],
   },
