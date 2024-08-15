@@ -9,14 +9,9 @@ import {
   LinkBox,
   LinkOverlay,
   Stack,
-  Text,
 } from '@chakra-ui/react'
 import { Pokemon, useGetEvolutionChain } from '../../../../../queries/pokemons'
-import {
-  capitalizeFirstLetter,
-  digits4,
-  getImage,
-} from '../../../../../lib/utils'
+import { capitalizeFirstLetter, getImage } from '../../../../../lib/utils'
 import { Fragment } from 'react/jsx-runtime'
 
 interface IEvolutionChainProps {
