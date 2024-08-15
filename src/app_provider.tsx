@@ -1,4 +1,4 @@
-import { createContext, useContext } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { useGetPokemons } from './queries/pokemons'
 
 export type PokemonResponse = {
@@ -11,6 +11,7 @@ type AppContextType = {
     count: number
     pokemons: undefined | PokemonResponse[]
     loadingPokemons: boolean
+    offset: number
   }
   actions: Record<string, any>
 }
@@ -20,6 +21,7 @@ const AppContext = createContext<AppContextType>({
     count: 0,
     pokemons: [],
     loadingPokemons: false,
+    offset: 0,
   },
   actions: {},
 })
@@ -29,9 +31,13 @@ export function useAppContext() {
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
+  const [limit, setLimit] = useState(12)
+  const [offset, setOffset] = useState(0)
+  const [includeCustom, setIncludeCustom] = useState(false)
   const { data, isLoading } = useGetPokemons({
-    limit: 12,
-    offset: 0,
+    limit,
+    offset,
+    includeCustom,
   })
 
   const count = data?.count || 0
@@ -44,8 +50,13 @@ export function AppProvider({ children }: { children: React.ReactNode }) {
           count,
           pokemons,
           loadingPokemons: isLoading,
+          offset,
         },
-        actions: {},
+        actions: {
+          setLimit,
+          setIncludeCustom,
+          setOffset,
+        },
       }}
     >
       {children}

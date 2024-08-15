@@ -4,7 +4,7 @@ import Link from '../../../components/link'
 export default function CreateButton() {
   return (
     <Link to="/create">
-      <Button>Create</Button>
+      <Button colorScheme="blue">Create</Button>
     </Link>
   )
 }

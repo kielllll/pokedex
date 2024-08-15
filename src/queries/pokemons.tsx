@@ -8,6 +8,7 @@ import {
 export const useGetPokemons = (args?: {
   limit?: number | string
   offset?: number | string
+  includeCustom?: boolean
 }) => {
   return useQuery({
     queryKey: ['pokemons', args?.limit ?? '', args?.offset ?? ''],
