@@ -1,0 +1,68 @@
+import { Link as RouterLink } from 'react-router-dom'
+import { ChevronRightIcon } from '@chakra-ui/icons'
+import {
+  Card,
+  CardBody,
+  Flex,
+  Heading,
+  Image,
+  LinkBox,
+  LinkOverlay,
+  Stack,
+  Text,
+} from '@chakra-ui/react'
+import { Pokemon, useGetEvolutionChain } from '../../../../../queries/pokemons'
+import {
+  capitalizeFirstLetter,
+  digits4,
+  getImage,
+} from '../../../../../lib/utils'
+import { Fragment } from 'react/jsx-runtime'
+
+interface IEvolutionChainProps {
+  pokemon: Pokemon
+}
+
+export default function EvolutionChain({ pokemon }: IEvolutionChainProps) {
+  const { data: evolutionChain } = useGetEvolutionChain(pokemon.name)
+
+  if (evolutionChain?.length === 0) return null
+
+  return (
+    <Card mt={6} p={4}>
+      <Heading size="lg">Evolution Chain</Heading>
+      <CardBody>
+        <Flex gap={4} width="100%" justifyContent="center" alignItems="center">
+          {evolutionChain?.map((evolutionPokemon, index) => {
+            return (
+              <Fragment key={evolutionPokemon}>
+                <LinkBox key={evolutionPokemon}>
+                  <LinkOverlay
+                    as={RouterLink}
+                    to={`/pokemons/${evolutionPokemon}`}
+                  >
+                    <Stack alignItems="center">
+                      <Image
+                        src={getImage(evolutionPokemon)}
+                        alt={evolutionPokemon}
+                        width={250}
+                        height={250}
+                        objectFit="contain"
+                      />
+                      <Heading size="md">
+                        {capitalizeFirstLetter(evolutionPokemon)}
+                      </Heading>
+                    </Stack>
+                  </LinkOverlay>
+                </LinkBox>
+                {index < evolutionChain.length - 1 && (
+                  <ChevronRightIcon fontSize={100} />
+                )}
+              </Fragment>
+            )
+          })}
+        </Flex>
+      </CardBody>
+    </Card>
+  )
+}

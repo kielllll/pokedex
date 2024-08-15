@@ -35,7 +35,7 @@ export default function Layout() {
             <GridItem colSpan={1} key={pokemon.name}>
               <LinkBox>
                 <LinkOverlay as={RouterLink} to={`/pokemons/${pokemon.name}`}>
-                  <Card pokemon={pokemon} />
+                  <Card name={pokemon.name} />
                 </LinkOverlay>
               </LinkBox>
             </GridItem>
