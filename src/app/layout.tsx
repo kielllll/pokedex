@@ -5,8 +5,11 @@ import DisplayOptions from './_components/display_options'
 import SearchField from './_components/search_field'
 import CreateButton from './_components/create_button'
 import Card from '../components/card'
+import { useAppContext } from '../app_provider'
 
 export default function Layout() {
+  const { states } = useAppContext()
+
   return (
     <>
       <Container maxW={'8xl'} py={4}>
@@ -19,9 +22,9 @@ export default function Layout() {
           </Stack>
         </Flex>
         <Grid templateColumns="repeat(4, 1fr)" gap={4} mt={12}>
-          {Array.from({ length: 8 }).map((_, index) => (
-            <GridItem colSpan={1} key={index}>
-              <Card />
+          {states.pokemons?.map((pokemon) => (
+            <GridItem colSpan={1} key={pokemon.id}>
+              <Card pokemon={pokemon} />
             </GridItem>
           ))}
         </Grid>
