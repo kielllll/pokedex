@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { ChakraProvider, extendTheme } from '@chakra-ui/react'
 import { routes } from './routes'
 import { AppProvider } from './app_provider'
+import { Suspense } from 'react'
 
 const queryClient = new QueryClient()
 
@@ -20,9 +21,11 @@ function App() {
   return (
     <ChakraProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <AppProvider>
-          <RouterProvider router={routes} />
-        </AppProvider>
+        <Suspense fallback={<div>Loading...</div>}>
+          <AppProvider>
+            <RouterProvider router={routes} />
+          </AppProvider>
+        </Suspense>
       </QueryClientProvider>
     </ChakraProvider>
   )

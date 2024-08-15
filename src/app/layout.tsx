@@ -1,5 +1,14 @@
 import { Outlet } from 'react-router'
-import { Container, Flex, Grid, GridItem, Stack } from '@chakra-ui/react'
+import { Link as RouterLink } from 'react-router-dom'
+import {
+  Container,
+  Flex,
+  Grid,
+  GridItem,
+  LinkBox,
+  LinkOverlay,
+  Stack,
+} from '@chakra-ui/react'
 import Logo from '../components/logo'
 import DisplayOptions from './_components/display_options'
 import SearchField from './_components/search_field'
@@ -24,7 +33,11 @@ export default function Layout() {
         <Grid templateColumns="repeat(4, 1fr)" gap={4} mt={12}>
           {states.pokemons?.map((pokemon) => (
             <GridItem colSpan={1} key={pokemon.id}>
-              <Card pokemon={pokemon} />
+              <LinkBox>
+                <LinkOverlay as={RouterLink} to={`/pokemons/${pokemon.name}`}>
+                  <Card pokemon={pokemon} />
+                </LinkOverlay>
+              </LinkBox>
             </GridItem>
           ))}
         </Grid>
