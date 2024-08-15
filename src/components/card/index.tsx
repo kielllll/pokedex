@@ -40,7 +40,7 @@ export default function Card(props: ICardProps) {
           alt={name}
           h={250}
           mx="auto"
-          objectFit="cover"
+          objectFit="contain"
         />
         <Flex mt="6" justifyContent="space-between" alignItems="center">
           <Heading size="md">{capitalizedName}</Heading>
