@@ -10,16 +10,11 @@ import {
 import { useGetPokemon } from '../../queries/pokemons'
 import { PokemonResponse } from '../../app_provider'
 import Tag from '../tag'
+import { digits4 } from '../../lib/utils'
 
 interface ICardProps {
   pokemon: PokemonResponse
 }
-
-const digits4 = new Intl.NumberFormat(undefined, {
-  minimumIntegerDigits: 4,
-  maximumSignificantDigits: 4,
-  useGrouping: false,
-})
 
 const IMAGE_PLACEHOLDER =
   'https://i.pinimg.com/originals/f5/54/89/f5548916ca86b30f7b8f418e4c5c6794.png'
