@@ -32,7 +32,7 @@ export default function Layout() {
         </Flex>
         <Grid templateColumns="repeat(4, 1fr)" gap={4} mt={12}>
           {states.pokemons?.map((pokemon) => (
-            <GridItem colSpan={1} key={pokemon.id}>
+            <GridItem colSpan={1} key={pokemon.name}>
               <LinkBox>
                 <LinkOverlay as={RouterLink} to={`/pokemons/${pokemon.name}`}>
                   <Card pokemon={pokemon} />

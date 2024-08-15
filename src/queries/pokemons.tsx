@@ -1,55 +1,39 @@
 import { QueryFunctionContext, useQuery } from '@tanstack/react-query'
 
-export type Pokemon = {
-  id: number
-  name: string
-  imageUrl: string
-  types: string[]
-}
-
 export const useGetPokemons = (args?: {
   limit?: number | string
   offset?: number | string
-  includeNew?: boolean
 }) => {
   return useQuery({
-    queryKey: [
-      'pokemons',
-      args?.limit ?? '',
-      args?.offset ?? '',
-      args?.includeNew ?? true,
-    ],
+    queryKey: ['pokemons', args?.limit ?? '', args?.offset ?? ''],
     queryFn: async ({
       queryKey,
-    }: QueryFunctionContext<
-      [string, string | number, string | number, boolean]
-    >) => {
-      const [_, limit, offset, includeNew] = queryKey
+    }: QueryFunctionContext<[string, string | number, string | number]>) => {
+      const [_, limit, offset] = queryKey
+      console.log('invoked')
       const response = await fetch(
         `${
-          import.meta.env.VITE_POKEDEX_API_URL
-        }?limit=${limit}&offset=${offset}&includeNew=${includeNew}`
+          import.meta.env.VITE_POKE_API_URL
+        }/pokemon?limit=${limit}&offset=${offset}`
       )
       const data = await response.json()
 
-      return data as Partial<Pokemon>[]
+      return data
     },
   })
 }
 
-export const useGetPokemon = (args: { id: number; initial?: boolean }) => {
+export const useGetPokemon = (name: string) => {
   return useQuery({
-    queryKey: ['pokemon', args.id, !!args?.initial],
-    queryFn: async ({
-      queryKey,
-    }: QueryFunctionContext<[string, number, boolean]>) => {
-      const [_, id, initial] = queryKey
+    queryKey: ['pokemon', name],
+    queryFn: async ({ queryKey }: QueryFunctionContext<[string, string]>) => {
+      const [_, name] = queryKey
       const response = await fetch(
-        `${import.meta.env.VITE_POKEDEX_API_URL}/${id}?initial=${initial}`
+        `${import.meta.env.VITE_POKE_API_URL}/pokemon/${name}`
       )
       const data = await response.json()
 
-      return data as Pokemon
+      return data
     },
   })
 }

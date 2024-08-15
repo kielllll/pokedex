@@ -1,9 +1,15 @@
 import { createContext, useContext } from 'react'
-import { Pokemon, useGetPokemons } from './queries/pokemons'
+import { useGetPokemons } from './queries/pokemons'
+
+export type PokemonResponse = {
+  name: string
+  url: string
+}
 
 type AppContextType = {
   states: {
-    pokemons: undefined | Partial<Pokemon>[]
+    count: number
+    pokemons: undefined | PokemonResponse[]
     loadingPokemons: boolean
   }
   actions: Record<string, any>
@@ -11,6 +17,7 @@ type AppContextType = {
 
 const AppContext = createContext<AppContextType>({
   states: {
+    count: 0,
     pokemons: [],
     loadingPokemons: false,
   },
@@ -22,14 +29,21 @@ export function useAppContext() {
 }
 
 export function AppProvider({ children }: { children: React.ReactNode }) {
-  const { data: pokemons, isLoading: loadingPokemons } = useGetPokemons()
+  const { data, isLoading } = useGetPokemons({
+    limit: 12,
+    offset: 0,
+  })
+
+  const count = data?.count || 0
+  const pokemons = data?.results ?? []
 
   return (
     <AppContext.Provider
       value={{
         states: {
+          count,
           pokemons,
-          loadingPokemons,
+          loadingPokemons: isLoading,
         },
         actions: {},
       }}
