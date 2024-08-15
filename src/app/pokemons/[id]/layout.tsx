@@ -18,14 +18,14 @@ export default function Layout() {
         <Flex justifyContent="space-between" alignItems="center" gap={4}>
           <Logo />
           <Link to="../../">
-            <Button>Back to List</Button>
+            <Button colorScheme="blue">Back to List</Button>
           </Link>
         </Flex>
         <Info pokemon={data} />
         <EvolutionChain pokemon={data} />
         <Center mt={6}>
           <Link to="../../">
-            <Button>Explore More Pokemons</Button>
+            <Button colorScheme="blue">Explore More Pokemons</Button>
           </Link>
         </Center>
       </Container>

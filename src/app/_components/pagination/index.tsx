@@ -26,12 +26,16 @@ export default function Pagination() {
     <Flex justifyContent="center" alignItems="center" gap={4} mt={12}>
       <Button
         colorScheme="blue"
-        isDisabled={states.offset === 0}
+        isDisabled={states.offset === 0 || states.loadingPokemons}
         onClick={handlePreviousClick}
       >
         Previous
       </Button>
-      <Button colorScheme="blue" onClick={handleNextClick}>
+      <Button
+        colorScheme="blue"
+        onClick={handleNextClick}
+        isDisabled={states.offset >= states.count || states.loadingPokemons}
+      >
         Next
       </Button>
     </Flex>
