@@ -10,14 +10,11 @@ import {
 import { useGetPokemon } from '../../queries/pokemons'
 import { PokemonResponse } from '../../app_provider'
 import Tag from '../tag'
-import { digits4 } from '../../lib/utils'
+import { digits4, getImage } from '../../lib/utils'
 
 interface ICardProps {
   pokemon: PokemonResponse
 }
-
-const IMAGE_PLACEHOLDER =
-  'https://i.pinimg.com/originals/f5/54/89/f5548916ca86b30f7b8f418e4c5c6794.png'
 
 export default function Card(props: ICardProps) {
   const { name = '' } = props.pokemon
@@ -29,9 +26,7 @@ export default function Card(props: ICardProps) {
     <ChakraCard maxW="sm" p="sm">
       <CardBody>
         <Image
-          src={
-            `https://img.pokemondb.net/artwork/${name}.jpg` || IMAGE_PLACEHOLDER
-          }
+          src={getImage(name)}
           alt={name}
           h={250}
           mx="auto"
