@@ -3,17 +3,36 @@ import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
 const schema = z.object({
-  id: z.number().max(9999, { message: 'ID must be at most 9999' }),
-  name: z.string(),
+  id: z
+    .number({ coerce: true })
+    .min(1302, { message: 'ID must be at least 1303' })
+    .max(9999, { message: 'ID must be at most 9999' }),
+  name: z.string().min(1, { message: 'Name is required' }),
   types: z.array(z.string()),
-  height: z.number(),
-  weight: z.number(),
-  hp: z.number().max(100, { message: 'HP must be at most 100' }),
-  attack: z.number().max(100, { message: 'HP must be at most 100' }),
-  defense: z.number().max(100, { message: 'HP must be at most 100' }),
-  specialAttack: z.number().max(100, { message: 'HP must be at most 100' }),
-  specialDefense: z.number().max(100, { message: 'HP must be at most 100' }),
-  speed: z.number().max(100, { message: 'HP must be at most 100' }),
+  height: z
+    .number({ coerce: true })
+    .min(0.1, { message: 'Height must be at least 0.1' }),
+  weight: z
+    .number({ coerce: true })
+    .min(0.1, { message: 'Weight must be at least 0.1' }),
+  hp: z
+    .number({ coerce: true })
+    .max(100, { message: 'HP must be at most 100' }),
+  attack: z
+    .number({ coerce: true })
+    .max(100, { message: 'HP must be at most 100' }),
+  defense: z
+    .number({ coerce: true })
+    .max(100, { message: 'HP must be at most 100' }),
+  specialAttack: z
+    .number({ coerce: true })
+    .max(100, { message: 'HP must be at most 100' }),
+  specialDefense: z
+    .number({ coerce: true })
+    .max(100, { message: 'HP must be at most 100' }),
+  speed: z
+    .number({ coerce: true })
+    .max(100, { message: 'HP must be at most 100' }),
   imageUrl: z.string(),
 })
 

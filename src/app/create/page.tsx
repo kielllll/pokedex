@@ -44,13 +44,13 @@ export default function CreatePage() {
           <Heading size="md">Create A New Pokemon</Heading>
         </ModalHeader>
         <ModalCloseButton />
-        <ModalBody>
-          <form
-            onSubmit={(e) => {
-              e.preventDefault()
-              handleSubmit(onSubmit)()
-            }}
-          >
+        <form
+          onSubmit={(e) => {
+            e.preventDefault()
+            handleSubmit(onSubmit)()
+          }}
+        >
+          <ModalBody>
             <Grid templateColumns="repeat(12, 1fr)" gap={4}>
               <GridItem colSpan={6}>
                 <FormControl>
@@ -65,8 +65,8 @@ export default function CreatePage() {
                 <FormControl>
                   <FormLabel>Name</FormLabel>
                   <Input type="text" {...register('name')} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.name?.message && (
+                    <Text color="red.500">{errors.name.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
@@ -74,8 +74,8 @@ export default function CreatePage() {
                 <FormControl>
                   <FormLabel>Height</FormLabel>
                   <Input type="number" {...register('height')} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.height?.message && (
+                    <Text color="red.500">{errors.height.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
@@ -83,8 +83,8 @@ export default function CreatePage() {
                 <FormControl>
                   <FormLabel>Weight</FormLabel>
                   <Input type="number" {...register('weight')} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.weight?.message && (
+                    <Text color="red.500">{errors.weight.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
@@ -114,8 +114,8 @@ export default function CreatePage() {
                     ]}
                     isMulti
                   />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.types?.message && (
+                    <Text color="red.500">{errors.types.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
@@ -123,8 +123,8 @@ export default function CreatePage() {
                 <FormControl>
                   <FormLabel>Image</FormLabel>
                   <Input type="file" {...register('imageUrl')} py={1} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.imageUrl?.message && (
+                    <Text color="red.500">{errors.imageUrl.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
@@ -132,8 +132,8 @@ export default function CreatePage() {
                 <FormControl>
                   <FormLabel>HP</FormLabel>
                   <Input type="number" {...register('hp')} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.hp?.message && (
+                    <Text color="red.500">{errors.hp.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
@@ -141,8 +141,8 @@ export default function CreatePage() {
                 <FormControl>
                   <FormLabel>Attack</FormLabel>
                   <Input type="number" {...register('attack')} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.attack?.message && (
+                    <Text color="red.500">{errors.attack.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
@@ -150,8 +150,8 @@ export default function CreatePage() {
                 <FormControl>
                   <FormLabel>Defense</FormLabel>
                   <Input type="number" {...register('defense')} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.defense?.message && (
+                    <Text color="red.500">{errors.defense.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
@@ -159,8 +159,8 @@ export default function CreatePage() {
                 <FormControl>
                   <FormLabel>Special Attack</FormLabel>
                   <Input type="number" {...register('specialAttack')} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.specialAttack?.message && (
+                    <Text color="red.500">{errors.specialAttack.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
@@ -168,8 +168,8 @@ export default function CreatePage() {
                 <FormControl>
                   <FormLabel>Special Defense</FormLabel>
                   <Input type="number" {...register('specialDefense')} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.specialDefense?.message && (
+                    <Text color="red.500">{errors.specialDefense.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
@@ -177,20 +177,20 @@ export default function CreatePage() {
                 <FormControl>
                   <FormLabel>Speed</FormLabel>
                   <Input type="number" {...register('speed')} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
+                  {errors.speed?.message && (
+                    <Text color="red.500">{errors.speed.message}</Text>
                   )}
                 </FormControl>
               </GridItem>
             </Grid>
-          </form>
-        </ModalBody>
-        <ModalFooter gap={4}>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button colorScheme="blue" type="submit">
-            Create
-          </Button>
-        </ModalFooter>
+          </ModalBody>
+          <ModalFooter gap={4}>
+            <Button onClick={handleClose}>Cancel</Button>
+            <Button colorScheme="blue" type="submit">
+              Create
+            </Button>
+          </ModalFooter>
+        </form>
       </ModalContent>
     </Modal>
   )
