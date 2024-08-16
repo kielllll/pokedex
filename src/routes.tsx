@@ -4,6 +4,8 @@ import { createBrowserRouter } from 'react-router-dom'
 const AppLayout = lazy(() => import('./app/layout'))
 const PokemonInfoLayout = lazy(() => import('./app/pokemons/[id]/layout'))
 
+const CreatePage = lazy(() => import('./app/create/page'))
+
 export const routes = createBrowserRouter([
   {
     path: '/',
@@ -11,11 +13,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: 'create',
-        element: <div>Create</div>,
-      },
-      {
-        path: 'update',
-        element: <div>Update</div>,
+        element: <CreatePage />,
       },
     ],
   },
