@@ -10,7 +10,8 @@ import {
   LinkOverlay,
   Stack,
 } from '@chakra-ui/react'
-import { Pokemon, useGetEvolutionChain } from '../../../../../queries/pokemons'
+import { Pokemon } from '../../../../../queries/pokemons'
+import { useGetEvolutionChain } from '../../../../../queries/evolution_chains'
 import { capitalizeFirstLetter, getImage } from '../../../../../lib/utils'
 import { Fragment } from 'react/jsx-runtime'
 
