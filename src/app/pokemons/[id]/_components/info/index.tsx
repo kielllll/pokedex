@@ -56,7 +56,11 @@ export default function Info({ pokemon }: IInfoProps) {
               </GridItem>
               <GridItem colSpan={2}>
                 <Heading size="sm">Abilities</Heading>
-                <Text mt={2}>{pokemon?.abilities || ''}</Text>
+                <Text mt={2}>
+                  {pokemon?.abilities
+                    .map((ability) => capitalizeFirstLetter(ability))
+                    .join(', ') || ''}
+                </Text>
               </GridItem>
               <GridItem colSpan={2}>
                 <Heading size="sm">Type</Heading>
