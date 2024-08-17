@@ -102,13 +102,10 @@ export const useGetPokemon = (name: string) => {
             ),
             abilities: data.abilities
               ?.filter(({ is_hidden }: { is_hidden: boolean }) => !is_hidden)
-              .map(({ ability }: { ability: Record<string, string> }) => {
-                const capitalizedName =
-                  ability.name.charAt(0).toUpperCase() + ability.name.slice(1)
-
-                return capitalizedName
-              })
-              .join(', '),
+              .map(
+                ({ ability }: { ability: Record<string, string> }) =>
+                  ability.name
+              ),
             stats: data.stats.map(
               ({
                 base_stat,
