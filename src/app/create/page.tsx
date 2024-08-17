@@ -1,12 +1,9 @@
 import { useNavigate } from 'react-router'
 import {
   Button,
-  FormControl,
-  FormLabel,
   Grid,
   GridItem,
   Heading,
-  Input,
   Modal,
   ModalBody,
   ModalCloseButton,
@@ -14,26 +11,94 @@ import {
   ModalFooter,
   ModalHeader,
   ModalOverlay,
-  Text,
 } from '@chakra-ui/react'
-import { Select } from 'chakra-react-select'
 import { useCreatePokemonForm } from './_hooks/use_create_pokemon_form'
 import type { FormData } from './_hooks/use_create_pokemon_form'
+import { useSetAtom } from 'jotai'
+import { pokemonsAtom } from '../../atoms'
+import InputField from '../../components/fields/Input'
+import SelectField, { OptionGroup } from '../../components/fields/Select'
+import { useTypesSelectOptions } from '../../hooks/use_types_select_options'
+import { useAbilitiesSelectOptions } from '../../hooks/use_abilities_select_options'
 
 export default function CreatePage() {
+  const { options: typeOptions, isLoading: typeOptionsLoading } =
+    useTypesSelectOptions()
+  const { options: abilityOptions, isLoading: abilityOptionsLoading } =
+    useAbilitiesSelectOptions()
+  const setPokemons = useSetAtom(pokemonsAtom)
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
+    watch,
   } = useCreatePokemonForm()
-  const navigate = useNavigate()
+  const [types, abilities] = watch(['types', 'abilities'])
 
   const handleClose = () => {
     navigate('..')
   }
 
   const onSubmit = (data: FormData) => {
-    console.log(data)
+    const {
+      hp,
+      attack,
+      defense,
+      specialAttack,
+      specialDefense,
+      speed,
+      ...rest
+    } = data
+
+    const newPokemon = {
+      ...rest,
+      stats: [
+        {
+          name: 'hp',
+          value: hp,
+        },
+        {
+          name: 'attack',
+          value: attack,
+        },
+        {
+          name: 'defense',
+          value: defense,
+        },
+        {
+          name: 'special-attack',
+          value: specialAttack,
+        },
+        {
+          name: 'special-defense',
+          value: specialDefense,
+        },
+        {
+          name: 'speed',
+          value: speed,
+        },
+      ],
+      isCustom: true,
+    }
+
+    setPokemons((pokemons) => [...pokemons, newPokemon])
+    navigate(`../pokemons/${newPokemon.name}`)
+  }
+
+  const handleTypeChange = (types: OptionGroup[]) => {
+    setValue(
+      'types',
+      types.map(({ value }) => value)
+    )
+  }
+
+  const handleAbilityChange = (abilities: OptionGroup[]) => {
+    setValue(
+      'abilities',
+      abilities.map(({ value }) => value)
+    )
   }
 
   return (
@@ -53,134 +118,145 @@ export default function CreatePage() {
           <ModalBody>
             <Grid templateColumns="repeat(12, 1fr)" gap={4}>
               <GridItem colSpan={6}>
-                <FormControl>
-                  <FormLabel>ID</FormLabel>
-                  <Input type="number" {...register('id')} max={9999} />
-                  {errors.id?.message && (
-                    <Text color="red.500">{errors.id.message}</Text>
-                  )}
-                </FormControl>
+                <InputField
+                  label="ID"
+                  inputProps={{
+                    type: 'number',
+                    ...register('id'),
+                  }}
+                  errorMessage={errors.id?.message}
+                />
               </GridItem>
               <GridItem colSpan={6}>
-                <FormControl>
-                  <FormLabel>Name</FormLabel>
-                  <Input type="text" {...register('name')} />
-                  {errors.name?.message && (
-                    <Text color="red.500">{errors.name.message}</Text>
-                  )}
-                </FormControl>
+                <InputField
+                  label="Name"
+                  inputProps={{
+                    type: 'text',
+                    ...register('name'),
+                  }}
+                  errorMessage={errors.name?.message}
+                />
               </GridItem>
               <GridItem colSpan={6}>
-                <FormControl>
-                  <FormLabel>Height</FormLabel>
-                  <Input type="number" {...register('height')} />
-                  {errors.height?.message && (
-                    <Text color="red.500">{errors.height.message}</Text>
-                  )}
-                </FormControl>
+                <InputField
+                  label="Height"
+                  inputProps={{
+                    type: 'number',
+                    ...register('height'),
+                  }}
+                  errorMessage={errors.height?.message}
+                />
               </GridItem>
               <GridItem colSpan={6}>
-                <FormControl>
-                  <FormLabel>Weight</FormLabel>
-                  <Input type="number" {...register('weight')} />
-                  {errors.weight?.message && (
-                    <Text color="red.500">{errors.weight.message}</Text>
-                  )}
-                </FormControl>
+                <InputField
+                  label="Weight"
+                  inputProps={{
+                    type: 'number',
+                    ...register('weight'),
+                  }}
+                  errorMessage={errors.weight?.message}
+                />
               </GridItem>
               <GridItem colSpan={6}>
-                <FormControl>
-                  <FormLabel>Types</FormLabel>
-                  <Select
-                    options={[
-                      { value: 'normal', label: 'Normal' },
-                      { value: 'fire', label: 'Fire' },
-                      { value: 'water', label: 'Water' },
-                      { value: 'electric', label: 'Electric' },
-                      { value: 'grass', label: 'Grass' },
-                      { value: 'ice', label: 'Ice' },
-                      { value: 'fighting', label: 'Fighting' },
-                      { value: 'poison', label: 'Poison' },
-                      { value: 'ground', label: 'Ground' },
-                      { value: 'flying', label: 'Flying' },
-                      { value: 'psychic', label: 'Psychic' },
-                      { value: 'bug', label: 'Bug' },
-                      { value: 'rock', label: 'Rock' },
-                      { value: 'ghost', label: 'Ghost' },
-                      { value: 'dragon', label: 'Dragon' },
-                      { value: 'dark', label: 'Dark' },
-                      { value: 'steel', label: 'Steel' },
-                      { value: 'fairy', label: 'Fairy' },
-                    ]}
-                    isMulti
-                  />
-                  {errors.types?.message && (
-                    <Text color="red.500">{errors.types.message}</Text>
+                <SelectField
+                  options={typeOptions}
+                  label="Types"
+                  name="types"
+                  isMulti
+                  onChange={(types) => handleTypeChange(types as OptionGroup[])}
+                  value={typeOptions.filter((type) =>
+                    types.includes(type.value)
                   )}
-                </FormControl>
+                  isLoading={typeOptionsLoading}
+                  errorMessage={errors.types?.message}
+                />
               </GridItem>
               <GridItem colSpan={6}>
-                <FormControl>
-                  <FormLabel>Image</FormLabel>
-                  <Input type="file" {...register('imageUrl')} py={1} />
-                  {errors.imageUrl?.message && (
-                    <Text color="red.500">{errors.imageUrl.message}</Text>
+                <SelectField
+                  options={abilityOptions}
+                  label="Abilities"
+                  name="abilities"
+                  isMulti
+                  onChange={(abilities) =>
+                    handleAbilityChange(abilities as OptionGroup[])
+                  }
+                  value={abilityOptions.filter((ability) =>
+                    abilities.includes(ability.value)
                   )}
-                </FormControl>
+                  isLoading={abilityOptionsLoading}
+                  errorMessage={errors.abilities?.message}
+                />
               </GridItem>
               <GridItem colSpan={4}>
-                <FormControl>
-                  <FormLabel>HP</FormLabel>
-                  <Input type="number" {...register('hp')} />
-                  {errors.hp?.message && (
-                    <Text color="red.500">{errors.hp.message}</Text>
-                  )}
-                </FormControl>
+                <InputField
+                  label="HP"
+                  inputProps={{
+                    type: 'number',
+                    ...register('hp'),
+                  }}
+                  errorMessage={errors.hp?.message}
+                />
               </GridItem>
               <GridItem colSpan={4}>
-                <FormControl>
-                  <FormLabel>Attack</FormLabel>
-                  <Input type="number" {...register('attack')} />
-                  {errors.attack?.message && (
-                    <Text color="red.500">{errors.attack.message}</Text>
-                  )}
-                </FormControl>
+                <InputField
+                  label="Attack"
+                  inputProps={{
+                    type: 'number',
+                    ...register('attack'),
+                  }}
+                  errorMessage={errors.attack?.message}
+                />
               </GridItem>
               <GridItem colSpan={4}>
-                <FormControl>
-                  <FormLabel>Defense</FormLabel>
-                  <Input type="number" {...register('defense')} />
-                  {errors.defense?.message && (
-                    <Text color="red.500">{errors.defense.message}</Text>
-                  )}
-                </FormControl>
+                <InputField
+                  label="Defense"
+                  inputProps={{
+                    type: 'number',
+                    ...register('defense'),
+                  }}
+                  errorMessage={errors.defense?.message}
+                />
               </GridItem>
               <GridItem colSpan={4}>
-                <FormControl>
-                  <FormLabel>Special Attack</FormLabel>
-                  <Input type="number" {...register('specialAttack')} />
-                  {errors.specialAttack?.message && (
-                    <Text color="red.500">{errors.specialAttack.message}</Text>
-                  )}
-                </FormControl>
+                <InputField
+                  label="Special Attack"
+                  inputProps={{
+                    type: 'number',
+                    ...register('specialAttack'),
+                  }}
+                  errorMessage={errors.specialAttack?.message}
+                />
               </GridItem>
               <GridItem colSpan={4}>
-                <FormControl>
-                  <FormLabel>Special Defense</FormLabel>
-                  <Input type="number" {...register('specialDefense')} />
-                  {errors.specialDefense?.message && (
-                    <Text color="red.500">{errors.specialDefense.message}</Text>
-                  )}
-                </FormControl>
+                <InputField
+                  label="Special Defense"
+                  inputProps={{
+                    type: 'number',
+                    ...register('specialDefense'),
+                  }}
+                  errorMessage={errors.specialDefense?.message}
+                />
               </GridItem>
               <GridItem colSpan={4}>
-                <FormControl>
-                  <FormLabel>Speed</FormLabel>
-                  <Input type="number" {...register('speed')} />
-                  {errors.speed?.message && (
-                    <Text color="red.500">{errors.speed.message}</Text>
-                  )}
-                </FormControl>
+                <InputField
+                  label="Speed"
+                  inputProps={{
+                    type: 'number',
+                    ...register('speed'),
+                  }}
+                  errorMessage={errors.speed?.message}
+                />
+              </GridItem>
+              <GridItem colSpan={12}>
+                <InputField
+                  label="Image"
+                  inputProps={{
+                    type: 'file',
+                    ...register('imageUrl'),
+                    py: 1,
+                  }}
+                  errorMessage={errors.imageUrl?.message}
+                />
               </GridItem>
             </Grid>
           </ModalBody>

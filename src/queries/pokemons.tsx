@@ -35,8 +35,8 @@ export const useGetPokemons = (args?: {
 export type Pokemon = {
   id: number
   name: string
-  height: string
-  weight: string
+  height: string | number
+  weight: string | number
   types: string[]
   abilities: string[]
   stats: {

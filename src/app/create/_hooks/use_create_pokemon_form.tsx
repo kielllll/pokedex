@@ -5,16 +5,23 @@ import { z } from 'zod'
 const schema = z.object({
   id: z
     .number({ coerce: true })
-    .min(1302, { message: 'ID must be at least 1303' })
+    .min(1, { message: 'ID must be at least 1' })
     .max(9999, { message: 'ID must be at most 9999' }),
-  name: z.string().min(1, { message: 'Name is required' }),
-  types: z.array(z.string()),
-  height: z
-    .number({ coerce: true })
-    .min(0.1, { message: 'Height must be at least 0.1' }),
-  weight: z
-    .number({ coerce: true })
-    .min(0.1, { message: 'Weight must be at least 0.1' }),
+  name: z
+    .string()
+    .min(1, { message: 'Name is required' })
+    .refine(
+      (value) => {
+        return /^\w+$/.test(value) // Checks if the string is a single word
+      },
+      {
+        message: 'Name must contain exactly one word.',
+      }
+    ),
+  abilities: z.array(z.string()).min(1, { message: 'Ability is required' }),
+  types: z.array(z.string()).min(1, { message: 'Type is required' }),
+  height: z.number({ coerce: true }),
+  weight: z.number({ coerce: true }),
   hp: z
     .number({ coerce: true })
     .max(100, { message: 'HP must be at most 100' }),
@@ -33,7 +40,7 @@ const schema = z.object({
   speed: z
     .number({ coerce: true })
     .max(100, { message: 'HP must be at most 100' }),
-  imageUrl: z.string(),
+  imageUrl: z.string().optional(),
 })
 
 export type FormData = z.infer<typeof schema>
@@ -45,6 +52,7 @@ export const useCreatePokemonForm = () => {
       id: 0,
       name: '',
       types: [],
+      abilities: [],
       height: 0,
       weight: 0,
       hp: 0,
