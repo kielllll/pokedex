@@ -18,8 +18,15 @@ const schema = z.object({
         message: 'Name must contain exactly one word.',
       }
     ),
-  abilities: z.array(z.string()).min(1, { message: 'Ability is required' }),
-  types: z.array(z.string()).min(1, { message: 'Type is required' }),
+  abilities: z
+    .array(z.string())
+    .min(1, { message: 'Ability is required' })
+    .max(2, {
+      message: 'Ability must be at most 2',
+    }),
+  types: z.array(z.string()).min(1, { message: 'Type is required' }).max(3, {
+    message: 'Type must be at most 3',
+  }),
   height: z.number({ coerce: true }),
   weight: z.number({ coerce: true }),
   hp: z
