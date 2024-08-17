@@ -3,6 +3,8 @@ import {
   convertDecimetersToFeetAndInches,
   convertHectoresToKilograms,
 } from '../lib/utils'
+import { getStoredValue, pokemonsAtom } from '../atoms'
+import { getDefaultStore } from 'jotai'
 
 export const useGetPokemons = (args?: {
   limit?: number | string
@@ -53,12 +55,23 @@ export const useGetPokemon = (name: string) => {
     queryFn: async ({ queryKey }: QueryFunctionContext<[string, string]>) => {
       try {
         const [_, name] = queryKey
+
+        // Check first if it exists in the persistence layer
+        const pokemons = (await getStoredValue(pokemonsAtom)) as Pokemon[]
+        const pokemon = pokemons?.find(
+          (pokemon) => pokemon.name.toLowerCase() === name.toLowerCase()
+        )
+
+        if (pokemon) return pokemon
+
         const response = await fetch(
           `${import.meta.env.VITE_POKE_API_URL}/pokemon/${name}`
         )
-        const data = await response.json()
 
-        if (data) {
+        // if pokemon is found, shape the response
+        if (response.ok) {
+          const data = await response.json()
+
           const { feet, inches } = convertDecimetersToFeetAndInches(data.height)
           const height = `${feet}' ${inches}"`
 
@@ -96,6 +109,7 @@ export const useGetPokemon = (name: string) => {
           return formattedData as Pokemon
         }
 
+        // Pokemon not found on both api and local storage
         throw new Error('Pokemon not found')
       } catch (error: any) {
         console.log(error)

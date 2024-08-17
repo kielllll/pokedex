@@ -30,7 +30,11 @@ export default function Info({ pokemon }: IInfoProps) {
         <Flex gap={12} justifyContent="space-evenly" alignItems="center">
           <Stack alignItems="center">
             <Image
-              src={getImage(pokemon.name)}
+              src={
+                pokemon?.isCustom
+                  ? pokemon?.imageUrl || getImage('')
+                  : getImage(pokemon.name)
+              }
               alt="Pokemon"
               width={250}
               height={250}
@@ -44,11 +48,11 @@ export default function Info({ pokemon }: IInfoProps) {
             <Grid templateColumns="repeat(4, 1fr)" gap={4}>
               <GridItem colSpan={2}>
                 <Heading size="sm">Height</Heading>
-                <Text mt={2}>{pokemon?.height || ''}</Text>
+                <Text mt={2}>{pokemon?.height || '0'}</Text>
               </GridItem>
               <GridItem colSpan={2}>
                 <Heading size="sm">Weight</Heading>
-                <Text mt={2}>{pokemon?.weight || ''}</Text>
+                <Text mt={2}>{pokemon?.weight || '0'}</Text>
               </GridItem>
               <GridItem colSpan={2}>
                 <Heading size="sm">Abilities</Heading>

@@ -22,7 +22,7 @@ export default function Layout() {
           </Link>
         </Flex>
         <Info pokemon={data} />
-        <EvolutionChain pokemon={data} />
+        {!data?.isCustom && <EvolutionChain pokemon={data} />}
         <Center mt={6}>
           <Link to="../../">
             <Button colorScheme="blue">Explore More Pokemons</Button>
