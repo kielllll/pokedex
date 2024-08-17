@@ -33,7 +33,7 @@ export function useAppContext() {
 export function AppProvider({ children }: { children: React.ReactNode }) {
   const [limit, setLimit] = useState(12)
   const [offset, setOffset] = useState(0)
-  const [includeCustom, setIncludeCustom] = useState(false)
+  const [includeCustom, setIncludeCustom] = useState(true)
   const { data, isLoading } = useGetPokemons({
     limit,
     offset,

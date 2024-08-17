@@ -4,7 +4,6 @@ import {
   convertHectoresToKilograms,
 } from '../lib/utils'
 import { getStoredValue, pokemonsAtom } from '../atoms'
-import { getDefaultStore } from 'jotai'
 
 export const useGetPokemons = (args?: {
   limit?: number | string
@@ -18,14 +17,32 @@ export const useGetPokemons = (args?: {
     }: QueryFunctionContext<[string, string | number, string | number]>) => {
       try {
         const [_, limit, offset] = queryKey
+
+        let res: {
+          name: string
+        }[] = []
+
+        if (args?.includeCustom) {
+          const customPokemons = (await getStoredValue(
+            pokemonsAtom
+          )) as Pokemon[]
+
+          if (customPokemons.length > +offset) {
+            res = customPokemons
+          }
+        }
+
         const response = await fetch(
-          `${
-            import.meta.env.VITE_POKE_API_URL
-          }/pokemon?limit=${limit}&offset=${offset}`
+          `${import.meta.env.VITE_POKE_API_URL}/pokemon?limit=${
+            +limit - res.length
+          }&offset=${offset}`
         )
         const data = await response.json()
 
-        return data
+        return {
+          count: data.count,
+          results: [...res, ...data.results],
+        }
       } catch (error: any) {
         console.log(error)
         throw new Error('pokemons.tsx - useGetPokemons: ' + error.message)

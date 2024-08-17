@@ -22,7 +22,7 @@ export default function Card({ name = '' }: ICardProps) {
     <ChakraCard maxW="sm" p="sm">
       <CardBody>
         <Image
-          src={getImage(name)}
+          src={data?.isCustom ? data?.imageUrl || getImage('') : getImage(name)}
           alt={name}
           h={250}
           mx="auto"
@@ -34,7 +34,7 @@ export default function Card({ name = '' }: ICardProps) {
         </Flex>
       </CardBody>
       <CardFooter>
-        <Flex alignItems="center" gap={4}>
+        <Flex alignItems="center" gap={2}>
           {data?.types.map((type: string) => (
             <Tag name={type} key={type} />
           ))}
