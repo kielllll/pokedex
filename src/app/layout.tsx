@@ -23,7 +23,14 @@ export default function Layout() {
 
   return (
     <>
-      <Container maxW={'8xl'} py={4}>
+      <Container
+        maxW={{
+          base: '100vw',
+          md: '6xl',
+          lg: '8xl',
+        }}
+        py={4}
+      >
         <Flex gap={4} alignItems="center" justifyContent="space-between">
           <Logo />
           <Stack direction="row" spacing={4} alignItems="center">
@@ -42,7 +49,15 @@ export default function Layout() {
             />
           </Center>
         ) : (
-          <Grid templateColumns="repeat(4, 1fr)" gap={4} mt={12}>
+          <Grid
+            templateColumns={{
+              base: 'repeat(1, 1fr)',
+              md: 'repeat(2, 1fr)',
+              lg: 'repeat(4, 1fr)',
+            }}
+            gap={4}
+            mt={12}
+          >
             {states.pokemons?.map((pokemon) => (
               <GridItem colSpan={1} key={pokemon.name}>
                 <LinkBox>

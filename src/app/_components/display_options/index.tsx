@@ -6,6 +6,7 @@ import {
   FormLabel,
   Heading,
   Input,
+  PlacementWithLogical,
   Popover,
   PopoverArrow,
   PopoverBody,
@@ -14,6 +15,7 @@ import {
   PopoverHeader,
   PopoverTrigger,
   Text,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
@@ -23,6 +25,10 @@ import { useAppContext } from '../../../app_provider'
 import { useQueryClient } from '@tanstack/react-query'
 
 export default function DisplayOptions() {
+  const placement = useBreakpointValue({
+    base: 'bottom',
+    xs: 'bottom-end',
+  })
   const { actions } = useAppContext()
   const queryClient = useQueryClient()
   const schema = z.object({
@@ -57,7 +63,7 @@ export default function DisplayOptions() {
   }
 
   return (
-    <Popover placement="bottom-end">
+    <Popover placement={(placement as PlacementWithLogical) || 'bottom-end'}>
       <PopoverTrigger>
         <Button leftIcon={<IoOptionsSharp />} colorScheme="blue">
           Display
