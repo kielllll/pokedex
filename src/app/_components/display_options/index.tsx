@@ -49,6 +49,7 @@ export default function DisplayOptions() {
   const onSubmit = ({ display, includeCustom }: FormData) => {
     actions.setLimit(display)
     actions.setIncludeCustom(includeCustom)
+    actions.setOffset(0)
 
     queryClient.invalidateQueries({
       queryKey: ['pokemons'],

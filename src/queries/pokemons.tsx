@@ -11,31 +11,72 @@ export const useGetPokemons = (args?: {
   includeCustom?: boolean
 }) => {
   return useQuery({
-    queryKey: ['pokemons', args?.limit ?? '', args?.offset ?? ''],
+    queryKey: [
+      'pokemons',
+      args?.limit ?? '',
+      args?.offset ?? '',
+      !!args?.includeCustom,
+    ],
     queryFn: async ({
       queryKey,
-    }: QueryFunctionContext<[string, string | number, string | number]>) => {
+    }: QueryFunctionContext<
+      [string, string | number, string | number, boolean]
+    >) => {
       try {
-        const [_, limit, offset] = queryKey
+        const [_, limit, offset, includeCustom] = queryKey
+
+        if (+limit === 0)
+          return {
+            count: 0,
+            results: [],
+          }
 
         let res: {
           name: string
         }[] = []
 
-        if (args?.includeCustom) {
+        let newOffset = +offset
+
+        if (!!includeCustom) {
           const customPokemons = (await getStoredValue(
             pokemonsAtom
           )) as Pokemon[]
 
+          // only add custom pokemons if count is > than offset
+          // higher offset means skip localstorage and fetch to api
           if (customPokemons.length > +offset) {
-            res = customPokemons
+            // early return if limit is <= custom pokemons
+            if (+limit <= customPokemons.length) {
+              const customPokemonsSlice = [...customPokemons].slice(
+                +offset,
+                +offset + +limit
+              )
+
+              if (customPokemonsSlice.length === limit) {
+                return {
+                  count: customPokemons.length,
+                  results: customPokemonsSlice,
+                }
+              }
+
+              // if remaining pokemons are < limit, continue
+              res = customPokemonsSlice
+            } else {
+              // prefill response from custom pokemons
+              res = customPokemons
+            }
+          }
+
+          // reset offset res count is === offset to cater first few pokemons from api
+          if (res.length === 0) {
+            newOffset -= customPokemons.length
           }
         }
 
         const response = await fetch(
           `${import.meta.env.VITE_POKE_API_URL}/pokemon?limit=${
             +limit - res.length
-          }&offset=${offset}`
+          }&offset=${newOffset}`
         )
         const data = await response.json()
 
