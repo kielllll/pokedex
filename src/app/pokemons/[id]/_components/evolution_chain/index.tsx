@@ -3,7 +3,6 @@ import { ChevronRightIcon } from '@chakra-ui/icons'
 import {
   Card,
   CardBody,
-  Flex,
   Heading,
   Image,
   LinkBox,

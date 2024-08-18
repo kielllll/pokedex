@@ -152,7 +152,12 @@ export default function CreatePage() {
   return (
     <Modal isOpen={true} onClose={handleClose}>
       <ModalOverlay />
-      <ModalContent minWidth="50vw">
+      <ModalContent
+        minWidth={{
+          base: '90vw',
+          lg: '50vw',
+        }}
+      >
         <ModalHeader>
           <Heading size="md">Create A New Pokemon</Heading>
         </ModalHeader>
@@ -235,7 +240,12 @@ export default function CreatePage() {
                   errorMessage={errors.abilities?.message}
                 />
               </GridItem>
-              <GridItem colSpan={4}>
+              <GridItem
+                colSpan={{
+                  base: 6,
+                  md: 4,
+                }}
+              >
                 <InputField
                   label="HP"
                   inputProps={{
@@ -245,7 +255,12 @@ export default function CreatePage() {
                   errorMessage={errors.hp?.message}
                 />
               </GridItem>
-              <GridItem colSpan={4}>
+              <GridItem
+                colSpan={{
+                  base: 6,
+                  md: 4,
+                }}
+              >
                 <InputField
                   label="Attack"
                   inputProps={{
@@ -255,7 +270,12 @@ export default function CreatePage() {
                   errorMessage={errors.attack?.message}
                 />
               </GridItem>
-              <GridItem colSpan={4}>
+              <GridItem
+                colSpan={{
+                  base: 6,
+                  md: 4,
+                }}
+              >
                 <InputField
                   label="Defense"
                   inputProps={{
@@ -265,7 +285,12 @@ export default function CreatePage() {
                   errorMessage={errors.defense?.message}
                 />
               </GridItem>
-              <GridItem colSpan={4}>
+              <GridItem
+                colSpan={{
+                  base: 6,
+                  md: 4,
+                }}
+              >
                 <InputField
                   label="Special Attack"
                   inputProps={{
@@ -275,7 +300,12 @@ export default function CreatePage() {
                   errorMessage={errors.specialAttack?.message}
                 />
               </GridItem>
-              <GridItem colSpan={4}>
+              <GridItem
+                colSpan={{
+                  base: 6,
+                  md: 4,
+                }}
+              >
                 <InputField
                   label="Special Defense"
                   inputProps={{
@@ -285,7 +315,12 @@ export default function CreatePage() {
                   errorMessage={errors.specialDefense?.message}
                 />
               </GridItem>
-              <GridItem colSpan={4}>
+              <GridItem
+                colSpan={{
+                  base: 6,
+                  md: 4,
+                }}
+              >
                 <InputField
                   label="Speed"
                   inputProps={{
