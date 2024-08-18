@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router'
+import { useQueryClient } from '@tanstack/react-query'
 import {
   Button,
   Grid,
@@ -21,6 +22,7 @@ import { useTypesSelectOptions } from '../../hooks/use_types_select_options'
 import { useAbilitiesSelectOptions } from '../../hooks/use_abilities_select_options'
 
 export default function CreatePage() {
+  const queryClient = useQueryClient()
   const { options: typeOptions, isLoading: typeOptionsLoading } =
     useTypesSelectOptions()
   const { options: abilityOptions, isLoading: abilityOptionsLoading } =
@@ -83,6 +85,9 @@ export default function CreatePage() {
     }
 
     setPokemons((pokemons) => [...pokemons, newPokemon])
+    queryClient.invalidateQueries({
+      queryKey: ['pokemons'],
+    })
     navigate(`../pokemons/${newPokemon.name}`)
   }
 
