@@ -210,7 +210,12 @@ export default function CreatePage() {
                   errorMessage={errors.weight?.message}
                 />
               </GridItem>
-              <GridItem colSpan={6}>
+              <GridItem
+                colSpan={{
+                  base: 12,
+                  md: 6,
+                }}
+              >
                 <SelectField
                   options={typeOptions}
                   label="Types"
@@ -224,7 +229,12 @@ export default function CreatePage() {
                   errorMessage={errors.types?.message}
                 />
               </GridItem>
-              <GridItem colSpan={6}>
+              <GridItem
+                colSpan={{
+                  base: 12,
+                  md: 6,
+                }}
+              >
                 <SelectField
                   options={abilityOptions}
                   label="Abilities"
