@@ -19,7 +19,13 @@ export default function Card({ name = '' }: ICardProps) {
   const { data } = useGetPokemon(name)
 
   return (
-    <ChakraCard maxW="sm" p="sm">
+    <ChakraCard
+      maxW={{
+        base: '100%',
+        md: 'sm',
+      }}
+      p="sm"
+    >
       <CardBody>
         <Image
           src={data?.isCustom ? data?.imageUrl || getImage('') : getImage(name)}
