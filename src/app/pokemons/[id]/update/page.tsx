@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useNavigate, useParams } from 'react-router'
 import {
   Button,
@@ -12,7 +13,8 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react'
-import { useSetAtom } from 'jotai'
+import { useQueryClient } from '@tanstack/react-query'
+import { useAtom } from 'jotai'
 import { useGetPokemon } from '../../../../queries/pokemons'
 import {
   type FormData,
@@ -25,13 +27,15 @@ import InputField from '../../../../components/fields/Input'
 import SelectField, { OptionGroup } from '../../../../components/fields/Select'
 
 export default function UpdatePage() {
+  const [submitting, setSubmitting] = useState(false)
+  const queryClient = useQueryClient()
   const navigate = useNavigate()
   const { name = '' } = useParams()
   const { options: typeOptions, isLoading: typeOptionsLoading } =
     useTypesSelectOptions()
   const { options: abilityOptions, isLoading: abilityOptionsLoading } =
     useAbilitiesSelectOptions()
-  const setPokemons = useSetAtom(pokemonsAtom)
+  const [pokemons, setPokemons] = useAtom(pokemonsAtom)
 
   const { data, isLoading } = useGetPokemon(name)
 
@@ -41,6 +45,7 @@ export default function UpdatePage() {
     formState: { errors },
     setValue,
     watch,
+    setError,
   } = usePokemonForm({
     ...data,
     hp: data?.stats.find((stat) => stat.name === 'hp')?.value,
@@ -72,7 +77,8 @@ export default function UpdatePage() {
     )
   }
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = async (formData: FormData) => {
+    setSubmitting(true)
     const {
       hp,
       attack,
@@ -81,7 +87,7 @@ export default function UpdatePage() {
       specialDefense,
       speed,
       ...rest
-    } = data
+    } = formData
 
     const newPokemon = {
       ...rest,
@@ -114,11 +120,59 @@ export default function UpdatePage() {
       isCustom: true,
     }
 
-    setPokemons((pokemons) =>
-      pokemons.map((pokemon) => (pokemon.name === name ? newPokemon : pokemon))
+    // Add validation to check id and name
+    const existingNameOnCustom = pokemons.some(
+      ({ name }) =>
+        formData.name.toLowerCase() === name.toLowerCase() &&
+        formData.name !== name
     )
 
-    navigate(`../../pokemons/${data.name}`)
+    const existingNameOnApi = await fetch(
+      `${
+        import.meta.env.VITE_POKE_API_URL
+      }/pokemon/${formData.name.toLowerCase()}`
+    )
+
+    if (existingNameOnCustom || existingNameOnApi.ok) {
+      setError('name', {
+        type: 'custom',
+        message: 'Name already exists',
+      })
+    }
+
+    const existingIdOnCustom = pokemons.some(
+      ({ id }) => formData.id === id && formData.id !== data?.id
+    )
+
+    const existingIdOnApi = await fetch(
+      `${import.meta.env.VITE_POKE_API_URL}/pokemon/${formData.id}`
+    )
+
+    if (existingIdOnCustom || existingIdOnApi.ok) {
+      setError('id', {
+        type: 'id',
+        message: 'ID already exists',
+      })
+    }
+
+    setSubmitting(false)
+
+    if (
+      existingNameOnCustom ||
+      existingNameOnApi.ok ||
+      existingIdOnCustom ||
+      existingIdOnApi.ok
+    ) {
+      return
+    }
+
+    setPokemons(
+      pokemons.map((pokemon) => (pokemon.name === name ? newPokemon : pokemon))
+    )
+    queryClient.invalidateQueries({
+      queryKey: ['pokemons'],
+    })
+    navigate(`../../pokemons/${formData.name}`)
   }
 
   if (isLoading || !data?.isCustom) return null
@@ -284,7 +338,7 @@ export default function UpdatePage() {
           </ModalBody>
           <ModalFooter gap={4}>
             <Button onClick={handleClose}>Cancel</Button>
-            <Button colorScheme="blue" type="submit">
+            <Button colorScheme="blue" type="submit" isLoading={submitting}>
               Update
             </Button>
           </ModalFooter>
