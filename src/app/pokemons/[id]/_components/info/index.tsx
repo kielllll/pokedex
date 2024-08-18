@@ -36,8 +36,27 @@ export default function Info({ pokemon }: IInfoProps) {
           </Flex>
         )}
       </Flex>
-      <CardBody>
-        <Flex gap={12} justifyContent="space-evenly" alignItems="center">
+      <CardBody
+        p={{
+          base: 0,
+          md: '1.25rem',
+        }}
+      >
+        <Stack
+          direction={{
+            base: 'column',
+            md: 'row',
+          }}
+          gap={{
+            base: 4,
+            md: 12,
+          }}
+          justifyContent="space-evenly"
+          alignItems={{
+            base: 'unset',
+            md: 'center',
+          }}
+        >
           <Stack alignItems="center">
             <Image
               src={
@@ -93,7 +112,7 @@ export default function Info({ pokemon }: IInfoProps) {
               ))}
             </Grid>
           </Stack>
-        </Flex>
+        </Stack>
       </CardBody>
     </Card>
   )

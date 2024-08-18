@@ -9,6 +9,7 @@ import {
   LinkBox,
   LinkOverlay,
   Stack,
+  useBreakpointValue,
 } from '@chakra-ui/react'
 import { Pokemon } from '../../../../../queries/pokemons'
 import { useGetEvolutionChain } from '../../../../../queries/evolution_chains'
@@ -21,6 +22,10 @@ interface IEvolutionChainProps {
 
 export default function EvolutionChain({ pokemon }: IEvolutionChainProps) {
   const { data: evolutionChain } = useGetEvolutionChain(pokemon.name)
+  const rotateChevron = useBreakpointValue({
+    base: 'rotate(90deg)',
+    md: 'unset',
+  })
 
   if (evolutionChain?.length === 0) return null
 
@@ -28,7 +33,16 @@ export default function EvolutionChain({ pokemon }: IEvolutionChainProps) {
     <Card mt={6} p={4}>
       <Heading size="lg">Evolution Chain</Heading>
       <CardBody>
-        <Flex gap={4} width="100%" justifyContent="center" alignItems="center">
+        <Stack
+          direction={{
+            base: 'column',
+            md: 'row',
+          }}
+          gap={4}
+          width="100%"
+          justifyContent="center"
+          alignItems="center"
+        >
           {evolutionChain?.map((evolutionPokemon, index) => {
             return (
               <Fragment key={evolutionPokemon}>
@@ -52,12 +66,12 @@ export default function EvolutionChain({ pokemon }: IEvolutionChainProps) {
                   </LinkOverlay>
                 </LinkBox>
                 {index < evolutionChain.length - 1 && (
-                  <ChevronRightIcon fontSize={100} />
+                  <ChevronRightIcon transform={rotateChevron} fontSize={100} />
                 )}
               </Fragment>
             )
           })}
-        </Flex>
+        </Stack>
       </CardBody>
     </Card>
   )
