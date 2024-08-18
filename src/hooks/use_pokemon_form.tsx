@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { z } from 'zod'
 
-const schema = z.object({
+export const schema = z.object({
   id: z
     .number({ coerce: true })
     .min(1, { message: 'ID must be at least 1' })
@@ -52,10 +52,10 @@ const schema = z.object({
 
 export type FormData = z.infer<typeof schema>
 
-export const useCreatePokemonForm = () => {
+export const usePokemonForm = (initialValues?: FormData | undefined) => {
   return useForm<FormData>({
     resolver: zodResolver(schema),
-    defaultValues: {
+    defaultValues: initialValues ?? {
       id: 0,
       name: '',
       types: [],

@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import {
   Button,
   Grid,
@@ -12,32 +12,64 @@ import {
   ModalHeader,
   ModalOverlay,
 } from '@chakra-ui/react'
-import { type FormData, usePokemonForm } from '../../hooks/use_pokemon_form'
 import { useSetAtom } from 'jotai'
-import { pokemonsAtom } from '../../atoms'
-import InputField from '../../components/fields/Input'
-import SelectField, { OptionGroup } from '../../components/fields/Select'
-import { useTypesSelectOptions } from '../../hooks/use_types_select_options'
-import { useAbilitiesSelectOptions } from '../../hooks/use_abilities_select_options'
+import { useGetPokemon } from '../../../../queries/pokemons'
+import {
+  type FormData,
+  usePokemonForm,
+} from '../../../../hooks/use_pokemon_form'
+import { useTypesSelectOptions } from '../../../../hooks/use_types_select_options'
+import { useAbilitiesSelectOptions } from '../../../../hooks/use_abilities_select_options'
+import { pokemonsAtom } from '../../../../atoms'
+import InputField from '../../../../components/fields/Input'
+import SelectField, { OptionGroup } from '../../../../components/fields/Select'
 
-export default function CreatePage() {
+export default function UpdatePage() {
+  const navigate = useNavigate()
+  const { name = '' } = useParams()
   const { options: typeOptions, isLoading: typeOptionsLoading } =
     useTypesSelectOptions()
   const { options: abilityOptions, isLoading: abilityOptionsLoading } =
     useAbilitiesSelectOptions()
   const setPokemons = useSetAtom(pokemonsAtom)
-  const navigate = useNavigate()
+
+  const { data, isLoading } = useGetPokemon(name)
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
     watch,
-  } = usePokemonForm()
+  } = usePokemonForm({
+    ...data,
+    hp: data?.stats.find((stat) => stat.name === 'hp')?.value,
+    attack: data?.stats.find((stat) => stat.name === 'attack')?.value,
+    defense: data?.stats.find((stat) => stat.name === 'defense')?.value,
+    specialAttack: data?.stats.find((stat) => stat.name === 'special-attack')
+      ?.value,
+    specialDefense: data?.stats.find((stat) => stat.name === 'special-defense')
+      ?.value,
+    speed: data?.stats.find((stat) => stat.name === 'speed')?.value,
+  } as FormData | undefined)
   const [types, abilities] = watch(['types', 'abilities'])
 
   const handleClose = () => {
     navigate('..')
+  }
+
+  const handleTypeChange = (types: OptionGroup[]) => {
+    setValue(
+      'types',
+      types.map(({ value }) => value)
+    )
+  }
+
+  const handleAbilityChange = (abilities: OptionGroup[]) => {
+    setValue(
+      'abilities',
+      abilities.map(({ value }) => value)
+    )
   }
 
   const onSubmit = (data: FormData) => {
@@ -82,30 +114,21 @@ export default function CreatePage() {
       isCustom: true,
     }
 
-    setPokemons((pokemons) => [...pokemons, newPokemon])
-    navigate(`../pokemons/${newPokemon.name}`)
+    setPokemons((pokemons) =>
+      pokemons.map((pokemon) => (pokemon.name === name ? newPokemon : pokemon))
+    )
+
+    navigate(`../../pokemons/${data.name}`)
   }
 
-  const handleTypeChange = (types: OptionGroup[]) => {
-    setValue(
-      'types',
-      types.map(({ value }) => value)
-    )
-  }
-
-  const handleAbilityChange = (abilities: OptionGroup[]) => {
-    setValue(
-      'abilities',
-      abilities.map(({ value }) => value)
-    )
-  }
+  if (isLoading || !data?.isCustom) return null
 
   return (
-    <Modal isOpen={true} onClose={handleClose}>
+    <Modal isOpen onClose={handleClose}>
       <ModalOverlay />
       <ModalContent minWidth="50vw">
         <ModalHeader>
-          <Heading size="md">Create A New Pokemon</Heading>
+          <Heading size="md">Update {name}</Heading>
         </ModalHeader>
         <ModalCloseButton />
         <form
@@ -262,7 +285,7 @@ export default function CreatePage() {
           <ModalFooter gap={4}>
             <Button onClick={handleClose}>Cancel</Button>
             <Button colorScheme="blue" type="submit">
-              Create
+              Update
             </Button>
           </ModalFooter>
         </form>

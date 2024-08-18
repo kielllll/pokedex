@@ -5,6 +5,7 @@ const AppLayout = lazy(() => import('./app/layout'))
 const PokemonInfoLayout = lazy(() => import('./app/pokemons/[id]/layout'))
 
 const CreatePage = lazy(() => import('./app/create/page'))
+const UpdatePage = lazy(() => import('./app/pokemons/[id]/update/page'))
 
 export const routes = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ export const routes = createBrowserRouter([
     children: [
       {
         path: 'update',
-        element: <div>Update</div>,
+        element: <UpdatePage />,
       },
     ],
   },

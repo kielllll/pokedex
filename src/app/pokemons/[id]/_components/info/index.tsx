@@ -1,4 +1,6 @@
+import { useNavigate } from 'react-router'
 import {
+  Button,
   Card,
   CardBody,
   Flex,
@@ -23,9 +25,25 @@ interface IInfoProps {
 }
 
 export default function Info({ pokemon }: IInfoProps) {
+  const navigate = useNavigate()
+
+  const handleUpdateClick = () => {
+    navigate('update')
+  }
+
   return (
     <Card mt={12} p={4}>
-      <Heading size="lg">Pokemon Info</Heading>
+      <Flex gap={4} justifyContent="space-between" alignItems="center">
+        <Heading size="lg">Pokemon Info</Heading>
+        {pokemon?.isCustom && (
+          <Flex gap={4} alignItems="center">
+            <Button colorScheme="blue" onClick={handleUpdateClick}>
+              Update
+            </Button>
+            <Button colorScheme="red">Delete</Button>
+          </Flex>
+        )}
+      </Flex>
       <CardBody>
         <Flex gap={12} justifyContent="space-evenly" alignItems="center">
           <Stack alignItems="center">
