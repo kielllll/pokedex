@@ -2,6 +2,10 @@
 
 This is a web application that is built with [`Vite + React`](https://vitejs.dev/guide/), [`TypeScript`](https://www.typescriptlang.org/), and [`Chakra UI`](https://v2.chakra-ui.com/). It uses the [`PokeAPI`](https://pokeapi.co/docs/v2#info) to fetch and display Pokemon data on top with a local storage as a persistent data store using [`Jotai`](https://jotai.org/).
 
+## Demo
+
+You can see a demo of the application [here](https://dqp9yjms1imz2.cloudfront.net/).
+
 ## Installation
 
 Before staring, you must have these requirements installed:
