@@ -15,11 +15,12 @@ interface ISelectFieldProps {
   isMulti?: boolean
   onChange: (values: OptionGroup[]) => void
   isLoading?: boolean
+  isRequired?: boolean
 }
 
 export default function SelectField(props: ISelectFieldProps) {
   return (
-    <FormControl>
+    <FormControl isRequired={props?.isRequired}>
       <FormLabel>{props.label}</FormLabel>
       <Select
         options={props.options}

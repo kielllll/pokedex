@@ -209,6 +209,7 @@ export default function UpdatePage() {
                     ...register('id'),
                   }}
                   errorMessage={errors.id?.message}
+                  isRequired
                 />
               </GridItem>
               <GridItem colSpan={6}>
@@ -219,6 +220,7 @@ export default function UpdatePage() {
                     ...register('name'),
                   }}
                   errorMessage={errors.name?.message}
+                  isRequired
                 />
               </GridItem>
               <GridItem colSpan={6}>
@@ -258,6 +260,7 @@ export default function UpdatePage() {
                   )}
                   isLoading={typeOptionsLoading}
                   errorMessage={errors.types?.message}
+                  isRequired
                 />
               </GridItem>
               <GridItem
@@ -279,6 +282,7 @@ export default function UpdatePage() {
                   )}
                   isLoading={abilityOptionsLoading}
                   errorMessage={errors.abilities?.message}
+                  isRequired
                 />
               </GridItem>
               <GridItem
