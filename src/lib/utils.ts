@@ -41,12 +41,14 @@ export const capitalizeFirstLetter = (str: string) => {
 }
 
 export const mapEvolutionChainToPokemon = (
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   chain: Record<string, any>,
   pokemons: string[]
 ) => {
   pokemons.push(chain.species.name)
 
   if (chain.evolves_to.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     chain.evolves_to.forEach((evolution: Record<string, any>) =>
       mapEvolutionChainToPokemon(evolution, pokemons)
     )

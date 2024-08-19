@@ -6,7 +6,7 @@ export const useGetEvolutionChain = (name: string) => {
     queryKey: ['evolution_chain', name],
     queryFn: async ({ queryKey }: QueryFunctionContext<[string, string]>) => {
       try {
-        const [_, name] = queryKey
+        const [, name] = queryKey
         const speciesResponse = await fetch(
           `${import.meta.env.VITE_POKE_API_URL}/pokemon-species/${name}`
         )
@@ -19,13 +19,14 @@ export const useGetEvolutionChain = (name: string) => {
           )
 
           const evolutionChain = await evolutionChainResponse.json()
-          let pokemons: string[] = []
+          const pokemons: string[] = []
           mapEvolutionChainToPokemon(evolutionChain.chain, pokemons)
 
           return pokemons
         }
 
         throw new Error('Species not found')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.log(error)
         throw new Error('pokemons.tsx - useGetEvolutionChain: ' + error.message)

@@ -11,6 +11,7 @@ export const useGetTypes = () => {
         const data = await response.json()
 
         return data.results.map((type: { name: string }) => type.name)
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.log(error)
         throw new Error('types.tsx - useGetTypes: ' + error.message)

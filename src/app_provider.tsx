@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import React, { createContext, useContext, useState } from 'react'
 import { useGetPokemons } from './queries/pokemons'
 
 export type PokemonResponse = {
@@ -13,7 +13,11 @@ type AppContextType = {
     loadingPokemons: boolean
     offset: number
   }
-  actions: Record<string, any>
+  actions: {
+    setLimit: React.Dispatch<React.SetStateAction<number>>
+    setIncludeCustom: React.Dispatch<React.SetStateAction<boolean>>
+    setOffset: React.Dispatch<React.SetStateAction<number>>
+  }
 }
 
 const AppContext = createContext<AppContextType>({
@@ -23,7 +27,11 @@ const AppContext = createContext<AppContextType>({
     loadingPokemons: false,
     offset: 0,
   },
-  actions: {},
+  actions: {
+    setLimit: () => {},
+    setIncludeCustom: () => {},
+    setOffset: () => {},
+  },
 })
 
 export function useAppContext() {

@@ -4,7 +4,7 @@ import { Atom, getDefaultStore } from 'jotai'
 
 export const pokemonsAtom = atomWithStorage<Pokemon[]>('pokemons', [])
 
-export const getStoredValue = (atom: Atom<any>) => {
+export const getStoredValue = (atom: Atom<Pokemon[]>) => {
   return new Promise((resolve) => {
     const unsubscribe = getDefaultStore().sub(atom, () => {
       unsubscribe()

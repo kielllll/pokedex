@@ -20,7 +20,7 @@ export const useGetPokemons = (args?: {
       [string, string | number, string | number, boolean]
     >) => {
       try {
-        const [_, limit, offset, includeCustom] = queryKey
+        const [, limit, offset, includeCustom] = queryKey
 
         if (+limit === 0)
           return {
@@ -34,7 +34,7 @@ export const useGetPokemons = (args?: {
 
         let newOffset = +offset
 
-        if (!!includeCustom) {
+        if (includeCustom) {
           const customPokemons = (await getStoredValue(
             pokemonsAtom
           )) as Pokemon[]
@@ -81,6 +81,7 @@ export const useGetPokemons = (args?: {
           count: data.count,
           results: [...res, ...data.results],
         }
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.log(error)
         throw new Error('pokemons.tsx - useGetPokemons: ' + error.message)
@@ -109,7 +110,7 @@ export const useGetPokemon = (name: string) => {
     queryKey: ['pokemon', name],
     queryFn: async ({ queryKey }: QueryFunctionContext<[string, string]>) => {
       try {
-        const [_, name] = queryKey
+        const [, name] = queryKey
 
         // Check first if it exists in the persistence layer
         const pokemons = (await getStoredValue(pokemonsAtom)) as Pokemon[]
@@ -160,6 +161,7 @@ export const useGetPokemon = (name: string) => {
 
         // Pokemon not found on both api and local storage
         throw new Error('Pokemon not found')
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
       } catch (error: any) {
         console.log(error)
         throw new Error('pokemons.tsx - useGetPokemon: ' + error.message)
