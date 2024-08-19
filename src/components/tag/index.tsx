@@ -25,5 +25,9 @@ export default function Tag({ name }: { name: string }) {
   const color = COLORS[name]
   const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1)
 
-  return <ChakraTag backgroundColor={color}>{capitalizedName}</ChakraTag>
+  return (
+    <ChakraTag backgroundColor={color} data-testid="type">
+      {capitalizedName}
+    </ChakraTag>
+  )
 }

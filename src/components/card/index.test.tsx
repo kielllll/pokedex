@@ -1,4 +1,4 @@
-import { render, screen } from '@testing-library/react'
+import { render } from '@testing-library/react'
 import '@testing-library/jest-dom'
 import Card from './index'
 import { useGetPokemon } from '../../queries/pokemons'
@@ -58,17 +58,17 @@ describe('Card Component', () => {
   it('renders correctly when no data is returned', () => {
     mockedUseGetPokemon.mockReturnValue({ data: null })
 
-    render(<Card name={name} />)
+    const { getByText, getByAltText } = render(<Card name={name} />)
 
-    expect(screen.getByAltText(name)).toBeInTheDocument()
-    expect(screen.getByText(`#${digits4.format(0)}`)).toBeInTheDocument()
+    expect(getByAltText(name)).toBeInTheDocument()
+    expect(getByText(`#${digits4.format(0)}`)).toBeInTheDocument()
   })
 
   it('renders correctly when types array is empty', () => {
     mockedUseGetPokemon.mockReturnValue({ data: { ...data, types: [] } })
 
-    render(<Card name={name} />)
+    const { queryByTestId } = render(<Card name={name} />)
 
-    expect(screen.queryByTestId('types')).not.toBeInTheDocument()
+    expect(queryByTestId('type')).not.toBeInTheDocument()
   })
 })
