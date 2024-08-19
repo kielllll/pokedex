@@ -12,9 +12,12 @@ export const getStoredValue = (atom: Atom<any>) => {
     })
 
     const value = getDefaultStore().get(atom)
+
     if (value.length > 0) {
       unsubscribe()
       resolve(value)
     }
+
+    resolve(value)
   })
 }
