@@ -1,8 +1,5 @@
 import { QueryFunctionContext, useQuery } from '@tanstack/react-query'
-import {
-  convertDecimetersToFeetAndInches,
-  convertHectoresToKilograms,
-} from '../lib/utils'
+import { convertHectoresToKilograms } from '../lib/utils'
 import { getStoredValue, pokemonsAtom } from '../atoms'
 
 export const useGetPokemons = (args?: {
@@ -130,14 +127,11 @@ export const useGetPokemon = (name: string) => {
         if (response.ok) {
           const data = await response.json()
 
-          const { feet, inches } = convertDecimetersToFeetAndInches(data.height)
-          const height = `${feet}' ${inches}"`
-
           const formattedData = {
             id: data.id,
             name: data.name,
-            height,
-            weight: `${convertHectoresToKilograms(data.weight)} kg`,
+            height: data.height,
+            weight: convertHectoresToKilograms(data.weight),
             types: data.types.map(
               ({ type }: { type: Record<string, string> }) => type.name
             ),

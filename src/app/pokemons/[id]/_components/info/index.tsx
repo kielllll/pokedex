@@ -12,6 +12,7 @@ import {
 } from '@chakra-ui/react'
 import {
   capitalizeFirstLetter,
+  convertDecimetersToFeetAndInches,
   digits4,
   getImage,
 } from '../../../../../lib/utils'
@@ -25,6 +26,9 @@ interface IInfoProps {
 }
 
 export default function Info({ pokemon }: IInfoProps) {
+  const { feet, inches } = convertDecimetersToFeetAndInches(
+    +pokemon.height || 0
+  )
   return (
     <Card mt={12} p={4}>
       <Flex gap={4} justifyContent="space-between" alignItems="center">
@@ -77,11 +81,13 @@ export default function Info({ pokemon }: IInfoProps) {
             <Grid templateColumns="repeat(4, 1fr)" gap={4}>
               <GridItem colSpan={2}>
                 <Heading size="sm">Height</Heading>
-                <Text mt={2}>{pokemon?.height || '0'}</Text>
+                <Text mt={2}>
+                  {feet}' {inches}"
+                </Text>
               </GridItem>
               <GridItem colSpan={2}>
                 <Heading size="sm">Weight</Heading>
-                <Text mt={2}>{pokemon?.weight || '0'}</Text>
+                <Text mt={2}>{pokemon?.weight || 0} kg</Text>
               </GridItem>
               <GridItem colSpan={2}>
                 <Heading size="sm">Abilities</Heading>
