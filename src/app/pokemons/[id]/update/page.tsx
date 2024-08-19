@@ -172,6 +172,9 @@ export default function UpdatePage() {
     queryClient.invalidateQueries({
       queryKey: ['pokemons'],
     })
+    queryClient.invalidateQueries({
+      queryKey: ['pokemon', formData.name],
+    })
     navigate(`../../pokemons/${formData.name}`)
   }
 
