@@ -1,50 +1,57 @@
-# React + TypeScript + Vite
+# Pokedex
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This is a web application that is built with [`Vite + React`](https://vitejs.dev/guide/), [`TypeScript`](https://www.typescriptlang.org/), and [`Chakra UI`](https://v2.chakra-ui.com/). It uses the [`PokeAPI`](https://pokeapi.co/docs/v2#info) to fetch and display Pokemon data on top with a local storage as a persistent data store using [`Jotai`](https://jotai.org/).
 
-Currently, two official plugins are available:
+## Installation
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Before staring, you must have these requirements installed:
 
-## Expanding the ESLint configuration
+- pnpm
+- node (at least v19)
+- git
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+Start by cloning the repository:
 
-- Configure the top-level `parserOptions` property like this:
-
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+```bash
+git clone git@github.com:kielllll/pokedex.git
 ```
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+Change the directory to the project:
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+```bash
+cd pokedex
+```
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
+If you are using `nvm`, you can use the following command to install the required node version:
+
+```bash
+nvm use
+```
+
+Then, install the dependencies:
+
+```bash
+pnpm install
+```
+
+Copy the `.env.example` file to `.env` and fill in the required values. The value used for `VITE_POKE_API_URL` is the URL of the PokeAPI `https://pokeapi.co/api/v2`.
+
+```bash
+cp .env.example .env
+```
+
+Finally, start the development server:
+
+```bash
+pnpm dev
+```
+
+The application will be available at `http://localhost:5173`.
+
+## Tests
+
+To run the tests, you can use the following command:
+
+```bash
+pnpm test
 ```
