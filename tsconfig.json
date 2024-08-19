@@ -21,6 +21,6 @@
     "noEmit": true,
     "jsx": "react-jsx",
     "composite": true,
-    "types": ["node", "vite/client", "jest"]
+    "types": ["node", "vite/client", "jest", "@testing-library/jest-dom"]
   }
 }
