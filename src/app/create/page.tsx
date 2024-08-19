@@ -344,9 +344,8 @@ export default function CreatePage() {
                 <InputField
                   label="Image"
                   inputProps={{
-                    type: 'file',
+                    type: 'text',
                     ...register('imageUrl'),
-                    py: 1,
                   }}
                   errorMessage={errors.imageUrl?.message}
                 />
